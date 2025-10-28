@@ -3,6 +3,7 @@ import csv
 from models.llama_guard import check_input
 from models.model_loader import load_model, generate_model_response
 
+
 def run_prompt(prompt, category):
     print(f"\n🧠 CATEGORY: {category}")
     print(f"🧠 USER PROMPT: {prompt}")
