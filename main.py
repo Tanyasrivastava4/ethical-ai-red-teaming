@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
     try:
         with open(csv_path, newline='', encoding='utf-8') as f:
-            reader = csv.DictReader(f, delimiter='\t')  # since your file is tab-separated
+            reader = csv.DictReader(f)
             for row in reader:
                 prompt = row["prompt"]
                 category = row["category"]
