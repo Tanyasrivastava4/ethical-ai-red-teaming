@@ -1,0 +1,16 @@
+# Core ML libs (small defaults)
+torch
+transformers
+accelerate
+
+# Safety & utils
+detoxify
+transformers[sentencepiece]
+pandas
+tqdm
+pyyaml
+openpyxl
+
+# Optional (if using larger models/8bit)
+bitsandbytes
+safetensors
