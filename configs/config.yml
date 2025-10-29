@@ -1,0 +1,17 @@
+# config.yaml - change thresholds and model names here
+model:
+  # default small model for beginners (fast). Swap if you want larger model.
+  hf_model: "distilgpt2"   # small, lightweight. Replace with "mistralai/Mistral-7B" etc. when ready.
+  max_new_tokens: 128
+
+safety:
+  # thresholds (tune later)
+  detox_threshold: 0.5
+  hf_toxic_threshold: 0.55
+
+paths:
+  prompts_csv: "data/prompts.csv"
+  results_raw: "data/results_raw.csv"
+  results_defended: "data/results_defended.csv"
+  denials_log: "data/denials_log.csv"
+  compliance_report: "data/reports/compliance_report.xlsx"
