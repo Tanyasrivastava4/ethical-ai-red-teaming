@@ -8,7 +8,10 @@ import numpy as np
 detox = Detoxify('original')  # small and fast
 HF_MODEL = "unitary/toxic-bert"  # HF toxic model
 tokenizer = AutoTokenizer.from_pretrained(HF_MODEL)
-hf_model = AutoModelForSequenceClassification.from_pretrained(HF_MODEL).eval().to("cuda")
+device = "cuda" if torch.cuda.is_available() else "cpu"
+hf_model = AutoModelForSequenceClassification.from_pretrained(HF_MODEL).to(device).eval()
+
+#hf_model = AutoModelForSequenceClassification.from_pretrained(HF_MODEL).eval().to("cuda")
 
 # thresholds (tune these in config.yaml)
 DETOX_THRESH = 0.5    # Detoxify label threshold for any toxic label
