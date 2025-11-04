@@ -14,3 +14,6 @@ openpyxl
 # Optional (if using larger models/8bit)
 bitsandbytes
 safetensors
+
+
+
