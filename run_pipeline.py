@@ -14,6 +14,26 @@
  #   main()
 
 
+
+# run_pipeline.py
+#from src.red_team import run_once
+#from src.evaluate import compute_metrics
+#from src.utils import ensure_dirs
+
+#def main():
+ #   print("Starting Ethical AI Red Teaming pipeline...")
+  #  ensure_dirs()
+  #  run_once()
+  #  print("\nEvaluating results...")
+  #  compute_metrics()
+  #  print("\nDone. Check data/ for outputs.")
+
+#if __name__ == "__main__":
+ #   main()
+
+
+
+
 # run_pipeline.py
 """
 Runs the full Ethical AI Red Teaming pipeline:
