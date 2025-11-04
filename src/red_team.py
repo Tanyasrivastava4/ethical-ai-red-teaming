@@ -1,7 +1,8 @@
 # src/red_team.py
 import csv, os
 from models.llama_guard import check_input
-from models.model_loader import generate
+from models.model_loader import generate_model_response as generate
+#from models.model_loader import generate
 from models.output_scanner import output_scan
 from src.defenses import contextual_denial
 
