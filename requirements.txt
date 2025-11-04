@@ -15,5 +15,11 @@ openpyxl
 bitsandbytes
 safetensors
 
+#run code or pipeline by running these
+#pip install -r requirements.txt
+
+#export HUGGINGFACE_HUB_TOKEN="hf_xxx"
+
+#python run_pipeline.py
 
 
