@@ -72,7 +72,7 @@ Provides generate(prompt) function used by red_team.py
 import os
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
-from src.constants import CFG
+from src.constant import CFG
 
 MODEL_NAME = CFG.get("model", {}).get("llm_model", "mistralai/Mistral-7B-Instruct-v0.2")
 MAX_NEW_TOKENS = CFG.get("model", {}).get("max_new_tokens", 128)
