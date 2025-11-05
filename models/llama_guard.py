@@ -104,8 +104,14 @@ def _guard_classify(prompt: str, threshold: float = None) -> Tuple[bool, float, 
             if w in text:
                 score += 1.0
         score = score / max(1, len(unsafe_words))
-        guard_thresh = threshold if threshold is not None else CFG.get("guard", {}).get("guard_threshold", 0.55)
-        flagged = score >= guard_thresh
+        #guard_thresh = threshold if threshold is not None else CFG.get("guard", {}).get("guard_threshold", 0.55)
+        #flagged = score >= guard_thresh
+        guard_thresh = threshold if isinstance(threshold, (float, int)) else CFG.get("guard", {}).get("guard_threshold", 0.55)
+        if guard_thresh is None:
+            guard_thresh = 0.55  # default safety threshold
+        flagged = float(score) >= float(guard_thresh)
+
+        
         return flagged, float(score), out
     except Exception as e:
         print("[LlamaGuard] Classification error:", e)
