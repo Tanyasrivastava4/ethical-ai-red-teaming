@@ -32,6 +32,7 @@ Designed for machines with plenty of GPU memory (RTX 4090 / 5090).
 
 import os
 import re
+import torch
 import time
 from typing import Tuple
 from src.defenses import contextual_denial
@@ -64,7 +65,7 @@ def _load_guard():
         model_name = CFG.get("guard", {}).get("guard_model", "meta-llama/Llama-Guard-4-12B")
         load_kwargs = {
             "device_map": "auto",
-            "torch_dtype": "torch.float16"
+            "dtype": torch.float16
         }
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
         model = AutoModelForCausalLM.from_pretrained(model_name, **load_kwargs)
