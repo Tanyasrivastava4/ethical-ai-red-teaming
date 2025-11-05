@@ -94,28 +94,67 @@ def _guard_classify(prompt: str, threshold: float = None) -> Tuple[bool, float, 
         # If guard model unavailable, do not flag here (regex already ran)
         return False, 0.0, ""
 
+   # try:
+        # Some guard models use instruction wrappers; we send prompt directly here.
+    #    out = pipeline_guard(prompt, max_new_tokens=64)[0].get("generated_text", "")
+    #    text = out.lower()
+    #    unsafe_words = ["unsafe", "disallowed", "i cannot", "i can't", "refuse", "not allowed", "deny", "cannot comply"]
+     #   score = 0.0
+     #   for w in unsafe_words:
+      #      if w in text:
+       #         score += 1.0
+       # score = score / max(1, len(unsafe_words))
+       # #guard_thresh = threshold if threshold is not None else CFG.get("guard", {}).get("guard_threshold", 0.55)
+        #flagged = score >= guard_thresh
+       # guard_thresh = threshold if isinstance(threshold, (float, int)) else CFG.get("guard", {}).get("guard_threshold", 0.55)
+       # if guard_thresh is None:
+        #    guard_thresh = 0.55  # default safety threshold
+       # flagged = float(score) >= float(guard_thresh)
+
+        
+        #return flagged, float(score), out
+
     try:
         # Some guard models use instruction wrappers; we send prompt directly here.
         out = pipeline_guard(prompt, max_new_tokens=64)[0].get("generated_text", "")
         text = out.lower()
+
         unsafe_words = ["unsafe", "disallowed", "i cannot", "i can't", "refuse", "not allowed", "deny", "cannot comply"]
         score = 0.0
         for w in unsafe_words:
             if w in text:
                 score += 1.0
         score = score / max(1, len(unsafe_words))
-        #guard_thresh = threshold if threshold is not None else CFG.get("guard", {}).get("guard_threshold", 0.55)
-        #flagged = score >= guard_thresh
-        guard_thresh = threshold if isinstance(threshold, (float, int)) else CFG.get("guard", {}).get("guard_threshold", 0.55)
-        if guard_thresh is None:
-            guard_thresh = 0.55  # default safety threshold
-        flagged = float(score) >= float(guard_thresh)
 
-        
-        return flagged, float(score), out
+        #Get guard threshold safely
+        cfg_thresh = CFG.get("guard", {}).get("guard_threshold", 0.55)
+        guard_thresh = threshold if isinstance(threshold, (float, int)) else cfg_thresh
+
+    # ✅ Ensure both are valid floats
+        try:
+            guard_thresh = float(guard_thresh)
+        except (TypeError, ValueError):
+            guard_thresh = 0.55  # fallback default
+
+        try:
+           score = float(score)
+        except (TypeError, ValueError):
+            score = 0.0
+
+        flagged = score >= guard_thresh
+
+        return flagged, score, out
+
     except Exception as e:
         print("[LlamaGuard] Classification error:", e)
         return False, 0.0, ""
+
+
+
+ 
+    #except Exception as e:
+     #   print("[LlamaGuard] Classification error:", e)
+      #  return False, 0.0, ""
 
 def check_input(prompt: str):
     """
