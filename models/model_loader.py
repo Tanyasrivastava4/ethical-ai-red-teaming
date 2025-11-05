@@ -10,7 +10,7 @@
 #import os
 
 # You can change this if you want a smaller model later (like "TinyLlama" or "mistralai/Mistral-7B-Instruct-v0.2")
-MODEL_NAME = os.getenv("LLM_MODEL", "mistralai/Mistral-7B-Instruct-v0.2")
+#MODEL_NAME = os.getenv("LLM_MODEL", "mistralai/Mistral-7B-Instruct-v0.2")
 
 # -------------------------------
 # 1️⃣ Load model and tokenizer
