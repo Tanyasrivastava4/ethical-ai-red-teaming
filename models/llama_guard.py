@@ -228,12 +228,17 @@ def _load_guard():
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
         model = AutoModelForCausalLM.from_pretrained(model_name, **load_kwargs)
 
+#        tokenizer.pad_token = tokenizer.eos_token_id
+
         _guard_pipeline = pipeline(
             "text-generation",
             model=model,
             tokenizer=tokenizer,
             max_new_tokens=64,
-            do_sample=False
+            do_sample=False,
+            pad_token_id=tokenizer.eos_token_id
+           #tokenizer.pad_token = tokenizer.eos_token_id
+
         )
         print(f"[LlamaGuard] Loaded {model_name} (FP16, device_map=auto)")
     except Exception as e:
@@ -289,8 +294,17 @@ def _guard_classify(prompt: str, threshold: float = None) -> Tuple[bool, float, 
             score = float(score)
         except (TypeError, ValueError):
             score = 0.0
+        score = float(score) if score is not None else 0.0
+        guard_thresh = float(guard_thresh) if guard_thresh is not None else 0.55
+
+        # ensure both are floats
+        #score = float(score) if score is not None else 0.0
+       # guard_thresh = float(guard_thresh) if guard_thresh is not None else 0.55
 
         flagged = score >= guard_thresh
+
+
+        #flagged = score >= guard_thresh
 
         return flagged, score, out
 
