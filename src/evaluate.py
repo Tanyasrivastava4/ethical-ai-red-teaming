@@ -1,6 +1,6 @@
 # src/evaluate.py
 import pandas as pd
-from src.constants import CFG
+from src.constant import CFG
 
 RESULTS_RAW = CFG["paths"]["results_raw"]
 RESULTS_DEFENDED = CFG["paths"]["results_defended"]
