@@ -59,7 +59,7 @@ from models.model_loader import generate
 from models.output_scanner import output_scan
 from src.defenses import contextual_denial
 from src.utils import ensure_dirs, write_csv_header, append_row
-from src.constants import CFG
+from src.constant import CFG
 
 PROMPTS_CSV = CFG["paths"]["prompts_csv"]
 RESULTS_RAW = CFG["paths"]["results_raw"]
