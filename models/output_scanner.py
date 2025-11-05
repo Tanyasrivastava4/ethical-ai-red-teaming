@@ -2,7 +2,7 @@
 from detoxify import Detoxify
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import torch, os, re
-from src.constants import CFG
+from src.constant import CFG
 
 # load detoxify (fast)
 try:
