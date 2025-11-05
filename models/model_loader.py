@@ -64,6 +64,66 @@
 
 
 # models/model_loader.py
+#"""
+#Load and generate with Mistral-7B (or fallback small model).
+#Provides generate(prompt) function used by red_team.py
+#"""
+
+#import os
+#import torch
+#from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline
+#from src.constant import CFG
+
+#MODEL_NAME = CFG.get("model", {}).get("llm_model", "mistralai/Mistral-7B-Instruct-v0.2")
+#MAX_NEW_TOKENS = CFG.get("model", {}).get("max_new_tokens", 128)
+
+#_device = "cuda" if torch.cuda.is_available() else "cpu"
+#_generator = None
+
+#def _load_model():
+ #   global _generator
+  #  if _generator is not None:
+   #     return _generator
+   # try:
+    #    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
+        # attempt efficient loading: float16 + device_map auto + load_in_8bit if needed
+     #   load_kwargs = {"device_map": "auto", "dtype": torch.float16}
+        # If you have very limited VRAM, consider adding load_in_8bit=True and bitsandbytes installed
+      #  try:
+       #     model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, **load_kwargs)
+      #  except Exception:
+            # fallback: load without dtype/device_map (slower, CPU)
+       #     model = AutoModelForCausalLM.from_pretrained(MODEL_NAME)
+      #  device_id = 0 if _device == "cuda" else -1
+      #  _generator = pipeline("text-generation", model=model, tokenizer=tokenizer, device=device_id)
+      #  print(f"[Model Loader] Loaded {MODEL_NAME} on {_device}")
+   # except Exception as e:
+    #    print("Error loading model:", e)
+    #    _generator = None
+   # return _generator
+
+#def generate(prompt: str, max_new_tokens: int = None):
+ #   """
+  #  Public generate function used by the pipeline.
+   # """
+  #  gen = _load_model()
+  #  if gen is None:
+   #     return "[MODEL_ERROR] model not available"
+  #  if max_new_tokens is None:
+   #     max_new_tokens = MAX_NEW_TOKENS
+  #  try:
+   #     out = gen(prompt, max_new_tokens=max_new_tokens, do_sample=False)
+   #     text = out[0].get("generated_text", "")
+        # Remove prompt echo if present
+  #      if text.startswith(prompt):
+  #          text = text[len(prompt):].strip()
+  #      return text
+ #   except Exception as e:
+#        return f"[MODEL_ERROR] {e}"
+
+
+
+# models/model_loader.py
 """
 Load and generate with Mistral-7B (or fallback small model).
 Provides generate(prompt) function used by red_team.py
@@ -87,20 +147,34 @@ def _load_model():
     try:
         tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
         # attempt efficient loading: float16 + device_map auto + load_in_8bit if needed
-        load_kwargs = {"device_map": "auto", "torch_dtype": torch.float16}
+        load_kwargs = {"device_map": "auto", "dtype": torch.float16}
         # If you have very limited VRAM, consider adding load_in_8bit=True and bitsandbytes installed
         try:
             model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, **load_kwargs)
         except Exception:
             # fallback: load without dtype/device_map (slower, CPU)
             model = AutoModelForCausalLM.from_pretrained(MODEL_NAME)
+
         device_id = 0 if _device == "cuda" else -1
-        _generator = pipeline("text-generation", model=model, tokenizer=tokenizer, device=device_id)
+
+        # ✅ Robust pipeline creation (fixes accelerate/device issue)
+        try:
+            _generator = pipeline("text-generation", model=model, tokenizer=tokenizer, device=device_id)
+        except Exception as e:
+            msg = str(e).lower()
+            if "accelerate" in msg or "cannot be moved to a specific device" in msg:
+                _generator = pipeline("text-generation", model=model, tokenizer=tokenizer)
+            else:
+                print("Error creating pipeline:", e)
+                raise
+
         print(f"[Model Loader] Loaded {MODEL_NAME} on {_device}")
+
     except Exception as e:
         print("Error loading model:", e)
         _generator = None
     return _generator
+
 
 def generate(prompt: str, max_new_tokens: int = None):
     """
