@@ -461,6 +461,14 @@ def _guard_classify(prompt: str, threshold: float = None) -> Tuple[bool, float, 
         score = float(score)
 
         # Compare and flag
+        print(f"[DEBUG] raw model output: '{out}'")
+        print(f"[DEBUG] text processed: '{text}'")
+        print(f"[DEBUG] score calculated: {score}")
+        print(f"[DEBUG] guard_thresh from config/arg: {guard_thresh}")
+
+        #flagged = score >= guard_thresh
+
+     
         flagged = score >= guard_thresh
 
         return flagged, score, out
