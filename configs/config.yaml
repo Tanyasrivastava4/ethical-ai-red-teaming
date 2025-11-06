@@ -6,8 +6,9 @@ model:
 
 guard:
   guard_model: "meta-llama/Llama-Guard-4-12B"       # input safety model
-  use_4bit_for_guard: false                         # not using 4-bit quantization
-  guard_threshold: 0.55                             # probability threshold to mark unsafe
+  #use_4bit_for_guard: false                         # not using 4-bit quantization
+  #guard_threshold: 0.55                             # probability threshold to mark unsafe
+  guard_threshold: 0.55
   min_confidence: 0.55 
   input_regex_block: true                           # run cheap regex guard first
 
