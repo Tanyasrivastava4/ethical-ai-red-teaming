@@ -433,6 +433,8 @@ def _guard_classify(prompt: str, threshold: float = None) -> Tuple[bool, float, 
         # Some guard models use instruction wrappers; we send prompt directly here.
         start_time = time.time()
         out = pipeline_guard(prompt, max_new_tokens=64)[0].get("generated_text", "")
+        print(f"[DEBUG] Raw guard output:\n{out}\n")
+
         if time.time() - start_time > 20:
             print("[LlamaGuard] Warning: classification took >20s")
 
