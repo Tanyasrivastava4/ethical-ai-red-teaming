@@ -484,7 +484,9 @@ def _guard_classify(prompt: str, threshold: float = None) -> Tuple[bool, float, 
             score = 0.0
 
         # Debug prints
-        print(f"[DEBUG] score: {score}, guard_thresh: {guard_thresh}")
+        #print(f"[DEBUG] score: {score}, guard_thresh: {guard_thresh}")
+        print(f"[DEBUG BEFORE COMPARE] score={score} (type={type(score)}), guard_thresh={guard_thresh} (type={type(guard_thresh)})")
+
 
         flagged = score >= guard_thresh
 
