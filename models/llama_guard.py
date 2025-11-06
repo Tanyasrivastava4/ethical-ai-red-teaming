@@ -388,7 +388,7 @@ def _load_guard():
 
         load_kwargs = {
             "device_map": "auto",
-            "torch_dtype": torch.float16
+            "dtype": torch.float16
         }
 
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=True)
