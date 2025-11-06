@@ -443,33 +443,54 @@ def _guard_classify(prompt: str, threshold: float = None) -> Tuple[bool, float, 
         score = sum(1.0 for w in unsafe_words if w in text) / max(1, len(unsafe_words))
 
         # safely retrieve threshold with proper defaults
-        cfg_thresh = CFG.get("guard", {}).get("guard_threshold", 0.55)
+        #cfg_thresh = CFG.get("guard", {}).get("guard_threshold", 0.55)
         
         # Use provided threshold or fall back to config
-        if threshold is not None:
-            try:
-                guard_thresh = float(threshold)
-            except (TypeError, ValueError):
-                guard_thresh = 0.55
-        else:
-            try:
-                guard_thresh = float(cfg_thresh)
-            except (TypeError, ValueError):
-                guard_thresh = 0.55
+        #if threshold is not None:
+         #   try:
+          #      guard_thresh = float(threshold)
+           # except (TypeError, ValueError):
+            #    guard_thresh = 0.55
+        #else:
+         #   try:
+          #      guard_thresh = float(cfg_thresh)
+           # except (TypeError, ValueError):
+            #    guard_thresh = 0.55
 
         # Ensure score is a float (it should already be, but double-check)
-        score = float(score)
+        #score = float(score)
 
         # Compare and flag
-        print(f"[DEBUG] raw model output: '{out}'")
-        print(f"[DEBUG] text processed: '{text}'")
-        print(f"[DEBUG] score calculated: {score}")
-        print(f"[DEBUG] guard_thresh from config/arg: {guard_thresh}")
+        #print(f"[DEBUG] raw model output: '{out}'")
+        #print(f"[DEBUG] text processed: '{text}'")
+        #print(f"[DEBUG] score calculated: {score}")
+        #print(f"[DEBUG] guard_thresh from config/arg: {guard_thresh}")
 
         #flagged = score >= guard_thresh
 
-     
+        # safely retrieve threshold with proper defaults
+        cfg_thresh = CFG.get("guard", {}).get("guard_threshold", 0.55)
+
+# fallback logic made stricter
+        if threshold is not None and isinstance(threshold, (int, float)):
+            guard_thresh = float(threshold)
+        else:
+            guard_thresh = float(cfg_thresh) if isinstance(cfg_thresh, (int, float)) else 0.55
+
+# Ensure score is always float and not None
+        try:
+            score = float(score)
+        except (TypeError, ValueError):
+            score = 0.0
+
+        # Debug prints
+        print(f"[DEBUG] score: {score}, guard_thresh: {guard_thresh}")
+
         flagged = score >= guard_thresh
+
+     
+     
+        #flagged = score >= guard_thresh
 
         return flagged, score, out
 
