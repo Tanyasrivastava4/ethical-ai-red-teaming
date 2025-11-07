@@ -919,9 +919,8 @@ def _guard_classify(prompt: str, threshold: float = None) -> Tuple[bool, float, 
         messages = [
             {
                 "role": "user",
-                "content": [
-                    {"type": "text", "text": prompt}
-                ]
+                "content": prompt
+               
             },
         ]
         
