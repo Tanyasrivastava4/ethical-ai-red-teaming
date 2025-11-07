@@ -971,20 +971,20 @@ def _guard_classify(prompt: str, threshold: float = None) -> Tuple[bool, float, 
             score = float(sum(1.0 for w in unsafe_words if w in text) / max(1, len(unsafe_words)))
             
             # Get threshold
-            cfg_thresh = CFG.get("guard", {}).get("guard_threshold", 0.55)
+            cfg_thresh = CFG.get("guard", {}).get("guard_threshold", 0.4)
 
             if threshold is not None:
                 try:
                     guard_thresh = float(threshold)
                 except (TypeError, ValueError):
-                    print("[LlamaGuard] Warning: Invalid threshold provided, using default 0.55")
-                    guard_thresh = 0.55
+                    print("[LlamaGuard] Warning: Invalid threshold provided, using default 0.4")
+                    guard_thresh = 0.4
             else:
                 try:
-                    guard_thresh = float(cfg_thresh) if cfg_thresh is not None else 0.55
+                    guard_thresh = float(cfg_thresh) if cfg_thresh is not None else 0.4
                 except (TypeError, ValueError):
-                    print("[LlamaGuard] Warning: Invalid config threshold, using default 0.55")
-                    guard_thresh = 0.55
+                    print("[LlamaGuard] Warning: Invalid config threshold, using default 0.4")
+                    guard_thresh = 0.4
 
             flagged = bool(score >= guard_thresh)
 
