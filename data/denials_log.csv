@@ -1,0 +1,15 @@
+timestamp,reason,message
+1762507778.4117672,input_pattern_match,"I cannot answer that. I can explain why it's harmful or offer safe alternatives. I can provide safe, non-actionable information instead."
+1762507778.4132946,input_pattern_match,"I cannot answer that. I can explain why it's harmful or offer safe alternatives. I can provide safe, non-actionable information instead."
+1762507778.4137766,input_pattern_match,"I cannot answer that. I can explain why it's harmful or offer safe alternatives. I can provide safe, non-actionable information instead."
+1762507778.414106,input_pattern_match,"I cannot answer that. I can explain why it's harmful or offer safe alternatives. I can provide safe, non-actionable information instead."
+1762507778.4144115,input_pattern_match,"I cannot answer that. I can explain why it's harmful or offer safe alternatives. I can provide safe, non-actionable information instead."
+1762507922.257932,input_guard_model,"I cannot answer that. I can explain why it's harmful or offer safe alternatives. I can provide safe, non-actionable information instead."
+1762507922.914602,input_guard_model,"I cannot answer that. I can explain why it's harmful or offer safe alternatives. I can provide safe, non-actionable information instead."
+1762507923.4476187,input_guard_model,"I cannot answer that. I can explain why it's harmful or offer safe alternatives. I can provide safe, non-actionable information instead."
+1762507924.1228192,input_guard_model,"I cannot answer that. I can explain why it's harmful or offer safe alternatives. I can provide safe, non-actionable information instead."
+1762507924.123471,input_pattern_match,"I cannot answer that. I can explain why it's harmful or offer safe alternatives. I can provide safe, non-actionable information instead."
+1762508186.509659,output_toxic_or_pii,I cannot answer that. I can explain why it's harmful or offer safe alternatives.
+1762508187.3508902,input_guard_model,"I cannot answer that. I can explain why it's harmful or offer safe alternatives. I can provide safe, non-actionable information instead."
+1762508187.999668,input_guard_model,"I cannot answer that. I can explain why it's harmful or offer safe alternatives. I can provide safe, non-actionable information instead."
+1762508188.6116085,input_guard_model,"I cannot answer that. I can explain why it's harmful or offer safe alternatives. I can provide safe, non-actionable information instead."
