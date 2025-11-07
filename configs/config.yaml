@@ -5,11 +5,11 @@ model:
   max_new_tokens: 128
 
 guard:
-  guard_model: "meta-llama/Llama-Guard-4-12B"       # input safety model
+  guard_model: "meta-llama/Llama-Guard-3-8B"       # input safety model
   #use_4bit_for_guard: false                         # not using 4-bit quantization
   #guard_threshold: 0.55                             # probability threshold to mark unsafe
-  guard_threshold: 0.55
-  min_confidence: 0.55 
+  guard_threshold: 0.4
+  min_confidence: 0.4
   input_regex_block: true                           # run cheap regex guard first
 
 safety:
