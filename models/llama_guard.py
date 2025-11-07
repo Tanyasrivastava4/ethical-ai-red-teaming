@@ -639,7 +639,7 @@ def _load_guard():
         return _guard_model, _guard_processor
 
     try:
-        from transformers import AutoProcessor, Llama4ForConditionalGeneration
+        from transformers import AutoProcessor, Llama4ForConditionalGeneration, AutoConfig
         
         # Use Llama-Guard-4-12B
         model_name = CFG.get("guard", {}).get("guard_model", "meta-llama/Llama-Guard-4-12B")
@@ -649,9 +649,16 @@ def _load_guard():
         # Load processor (Llama-Guard-4 uses AutoProcessor, not AutoTokenizer)
         _guard_processor = AutoProcessor.from_pretrained(model_name)
         
+        # Load config and set attention_chunk_size (required for Llama 4)
+        config = AutoConfig.from_pretrained(model_name)
+        if not hasattr(config, 'attention_chunk_size') or config.attention_chunk_size is None:
+            config.attention_chunk_size = 2048
+            print(f"[LlamaGuard] Set attention_chunk_size=2048 for Llama 4")
+        
         # Load model (use Llama4ForConditionalGeneration for Llama-Guard-4)
         _guard_model = Llama4ForConditionalGeneration.from_pretrained(
             model_name,
+            config=config,
             device_map="auto",
             torch_dtype=torch.bfloat16,
         )
